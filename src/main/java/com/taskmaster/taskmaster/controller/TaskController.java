@@ -24,7 +24,7 @@ public class TaskController {
         this.taskService = taskService;
     }
     @Operation(summary = "Criar uma nova tarefa em uma lista")
-    @PostMapping("/{listId}")
+    @PostMapping("/create/{listId}")
     public ResponseEntity<TaskResponseDTO> createTask(@RequestBody TaskCreateDTO createDTO, @PathVariable Long listId) {
         Task newTask = taskService.save(TaskMapper.toTask(createDTO), listId);
         return ResponseEntity.status(201).body(TaskMapper.toDTO(newTask));
