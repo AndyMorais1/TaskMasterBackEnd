@@ -11,6 +11,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,20 @@ public class Task implements Serializable {
         Task task = (Task) o;
         return Objects.equals(id, task.id);
     }
+
+    //sistema de auditoria
+
+    @Column(name = "date_created")
+    private LocalDateTime dateCreated = LocalDateTime.now();
+
+    @Column(name = "date_modified")
+    private LocalDateTime dateModified;
+
+    @Column(name = "create_by")
+    private String createdBy;
+
+    @Column(name = "modified_by")
+    private String modifiedBy;
 
     @Override
     public int hashCode() {

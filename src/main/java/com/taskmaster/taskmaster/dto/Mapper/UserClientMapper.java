@@ -18,16 +18,7 @@ public class UserClientMapper {
 
     //mapear de UserClient(Model) para DTO (resposta/saida/mostrar)
    public static UserClientResponseDTO toDTO(UserClient user) {
-        String role = user.getRole().name().substring("ROLE_".length());
-       PropertyMap<UserClient, UserClientResponseDTO> props = new PropertyMap<UserClient, UserClientResponseDTO>() {
-           @Override
-           protected void configure() {
-               map().setRole(role);
-           }
-       };
-       ModelMapper mapper = new ModelMapper();
-       mapper.addMappings(props);
-       return mapper.map(user, UserClientResponseDTO.class);
+        return (UserClientResponseDTO) new ModelMapper().map(user, UserClientResponseDTO.class);
    }
 
    public static List<UserClientResponseDTO> toListDTO(List<UserClient> users) {

@@ -38,6 +38,7 @@ public class TaskService {
                 () -> new EntityNotFoundException("Task not found"));
     }
 
+
     @Transactional
     public List<Task> getAll() {
         return taskRepository.findAll();

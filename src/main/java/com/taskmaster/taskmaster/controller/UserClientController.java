@@ -7,6 +7,7 @@ import com.taskmaster.taskmaster.model.UserClient;
 import com.taskmaster.taskmaster.service.UserClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -38,7 +39,7 @@ public class UserClientController {
     @Operation(summary = "Criar um novo usuario")
     //cria usuario no banco
     @PostMapping
-    public ResponseEntity<UserClientResponseDTO> create(@RequestBody UserClientCreateDTO createDTO) {
+    public ResponseEntity<UserClientResponseDTO> create(@Valid @RequestBody UserClientCreateDTO createDTO) {
         UserClient user1 = userClientService.save(UserClientMapper.toUser(createDTO));
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(UserClientMapper.toDTO(user1));
     }

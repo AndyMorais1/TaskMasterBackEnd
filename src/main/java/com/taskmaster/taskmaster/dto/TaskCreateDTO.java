@@ -13,19 +13,10 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaskCreateDTO {
-    private int listId;
     private String name;
     private String priority;
     private LocalDate dueDate;
     private LocalTime dueTime;
-
-    public int getListId() {
-        return listId;
-    }
-
-    public void setListId(int listId) {
-        this.listId = listId;
-    }
 
     public String getName() {
         return name;
