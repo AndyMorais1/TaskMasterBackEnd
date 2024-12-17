@@ -30,6 +30,7 @@ public class TaskListController {
     public TaskListController(TaskListService taskListService) {
         this.taskListService = taskListService;
     }
+
     @Operation(summary = "Criar uma nova lista de tarefas para um usuario")
     @PostMapping("/create/{userid}")
     public ResponseEntity<TaskListResponseDTO> create(
@@ -50,7 +51,7 @@ public class TaskListController {
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/getList/{id}")
     public ResponseEntity<TaskListResponseDTO> searchById(@PathVariable Long id) {
         TaskList list1 = taskListService.getListById(id);
         return ResponseEntity.status(200).body(TaskListMapper.toDTO(list1));
@@ -87,6 +88,13 @@ public class TaskListController {
     public ResponseEntity<TaskListResponseDTO> updateTaskListName(@PathVariable Long tasklistId, @PathVariable String newname) {
         TaskList list1 = taskListService.updateTaskListName(tasklistId,newname);
         return ResponseEntity.status(200).body(TaskListMapper.toDTO(list1));
+
+   }
+
+   @GetMapping("/listByUser/{userId}")
+    public ResponseEntity <List<TaskListResponseDTO>> searchByUserId(@PathVariable Long userId) {
+        List<TaskList> listOfTaskLists = taskListService.getTaskListByUserId(userId);
+        return ResponseEntity.ok(TaskListMapper.toListDTO(listOfTaskLists));
 
    }
 

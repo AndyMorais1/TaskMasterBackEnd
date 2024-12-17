@@ -47,7 +47,10 @@ public class Task implements Serializable {
     }
 
     public enum Priority {
-        PRIORITY_LOW, PRIORITY_MEDIUM, PRIORITY_HIGH
+        PRIORITY_LOW,
+        PRIORITY_MEDIUM,
+        PRIORITY_HIGH,
+        PRIORITY_NONE
     }
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)

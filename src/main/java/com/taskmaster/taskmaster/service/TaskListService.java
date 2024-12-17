@@ -60,6 +60,7 @@ public class TaskListService {
 
     @Transactional
     public List<TaskList> getAll(){
+
         return taskListRepository.findAll();
     }
 
@@ -82,4 +83,11 @@ public class TaskListService {
       list.setName(newName);
       return taskListRepository.save(list);
     }
+
+    @Transactional
+    public List<TaskList> getTaskListByUserId (Long userId) {
+        List<TaskList> taskLists = taskListRepository.getTaskListByUserId(userId);
+        return taskLists;
+    }
+
 }

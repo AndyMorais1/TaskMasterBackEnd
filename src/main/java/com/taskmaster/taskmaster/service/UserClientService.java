@@ -33,6 +33,13 @@ public class UserClientService {
     }
 
     @Transactional
+    public UserClient getByName(String name) {
+        return userClientRepository.findByUsername(name).orElseThrow(
+                () -> new RuntimeException("User not found")
+        );
+    }
+
+    @Transactional
     public List<UserClient> getAll() {
         return userClientRepository.findAll();
     }
@@ -64,6 +71,12 @@ public class UserClientService {
 
         }
         return null;
+    }
+
+    public boolean verifyLogin(String username, String password) {
+        return userClientRepository.findByUsername(username)
+                .map(user -> user.getPassword().equals(password))
+                .orElse(false);
     }
 
 

@@ -1,6 +1,7 @@
 package com.taskmaster.taskmaster.dto.Mapper;
 
 import com.taskmaster.taskmaster.dto.UserClientCreateDTO;
+import com.taskmaster.taskmaster.dto.UserClientLoginDTO;
 import com.taskmaster.taskmaster.dto.UserClientResponseDTO;
 import com.taskmaster.taskmaster.model.UserClient;
 import org.modelmapper.ModelMapper;

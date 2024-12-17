@@ -1,5 +1,6 @@
 package com.taskmaster.taskmaster.dto;
 
+import com.taskmaster.taskmaster.model.Task;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
