@@ -17,7 +17,7 @@ public class TaskService {
     private final TaskListService taskListService;
 
     @Autowired
-  public TaskService(TaskRepository taskRepository, TaskListService taskListService) {
+    public TaskService(TaskRepository taskRepository, TaskListService taskListService) {
         this.taskRepository = taskRepository;
         this.taskListService = taskListService;
     }
@@ -60,11 +60,30 @@ public class TaskService {
     }
 
     @Transactional
-    public Task updateTaskName(Long id, String name) {
-        Task task = taskRepository.findById(id).orElseThrow(
+    public Task updateTaskName(Long taskId, String name) {
+        Task task = taskRepository.findById(taskId).orElseThrow(
                 () -> new EntityNotFoundException("Task not found")
         );
         task.setName(name);
         return taskRepository.save(task);
     }
+
+    @Transactional
+    public Task updateStatusToCompleted(Long taskId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(
+                () -> new EntityNotFoundException("Task not found")
+        );
+        task.setStatus(Task.Status.STATUS_COMPLETED);
+        return taskRepository.save(task);
+    }
+
+    @Transactional
+    public Task updateStatusToInProgress(Long id) {
+        Task task = taskRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Task not found")
+        );
+        task.setStatus(Task.Status.STATUS_IN_PROGRESS);
+        return taskRepository.save(task);
+    }
+
 }

@@ -73,6 +73,7 @@ public class UserClientController {
         return ResponseEntity.ok().body(dtoUser1);
     }
 
+    // por alterar com request body
     @PostMapping("/updatename/{userid}/{newname}")
     public ResponseEntity<UserClientResponseDTO> updateName(@PathVariable Long userid, @PathVariable String newname) {
         UserClient user1 = userClientService.getById(userid);
@@ -82,6 +83,7 @@ public class UserClientController {
         return ResponseEntity.ok().body(dtoUser1);
     }
 
+    // por alterar com request body
     @PostMapping("/updatepassword/{userid}/{newpassword}")
     public ResponseEntity<UserClientResponseDTO> updatePassword(@PathVariable Long userid, @PathVariable String newpassword) {
         UserClient user1 = userClientService.getById(userid);

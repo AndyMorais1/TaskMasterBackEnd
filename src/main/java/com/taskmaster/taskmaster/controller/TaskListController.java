@@ -84,6 +84,8 @@ public class TaskListController {
        return ResponseEntity.status(200).body(dtoTasks);
    }
 
+
+   // por alterar com request body
    @PostMapping("/updatename/{tasklistId}/{newname}")
     public ResponseEntity<TaskListResponseDTO> updateTaskListName(@PathVariable Long tasklistId, @PathVariable String newname) {
         TaskList list1 = taskListService.updateTaskListName(tasklistId,newname);
