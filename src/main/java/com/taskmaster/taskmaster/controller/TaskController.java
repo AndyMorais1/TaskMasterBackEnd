@@ -72,5 +72,11 @@ public class TaskController {
         return ResponseEntity.status(200).body(TaskMapper.toDTO(task));
     }
 
+    @PostMapping("/update/status/back")
+    public ResponseEntity<TaskResponseDTO> updateStatusToInProgress(@RequestBody Map<String, Long> body) {
+        Long taskId = body.get("id");
+        Task task = taskService.updateStatusToInProgress(taskId);
+        return ResponseEntity.status(200).body(TaskMapper.toDTO(task));
+    }
 
 }
