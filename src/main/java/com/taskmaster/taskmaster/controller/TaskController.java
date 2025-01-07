@@ -26,11 +26,14 @@ public class TaskController {
         this.taskService = taskService;
     }
     @Operation(summary = "Criar uma nova tarefa em uma lista")
-    @PostMapping("/create/{listId}")
-    public ResponseEntity<TaskResponseDTO> createTask(@RequestBody TaskCreateDTO createDTO, @PathVariable Long listId) {
-        Task newTask = taskService.save(TaskMapper.toTask(createDTO), listId);
+
+
+    @PostMapping("/create")
+    public ResponseEntity<TaskResponseDTO> createTask(@RequestBody TaskCreateDTO createDTO) {
+        Task newTask = taskService.save(TaskMapper.toTask(createDTO), createDTO.getListId());
         return ResponseEntity.status(201).body(TaskMapper.toDTO(newTask));
     }
+
 
     @GetMapping("/{taskId}")
     public ResponseEntity<TaskResponseDTO> getTaskById( @PathVariable Long taskId) {

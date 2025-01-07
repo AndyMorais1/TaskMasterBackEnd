@@ -23,14 +23,21 @@ public class TaskService {
     }
 
     @Transactional
-    public Task save(Task task, Long TaskListId) {
-        var list = taskListService.getListById(TaskListId);
-        if (list == null) {
-            throw new EntityNotFoundException("TaskList");
+    public Task save(Task task, Long taskListId) {
+        if (taskListId != null) {
+            var list = taskListService.getListById(taskListId);
+            if (list == null) {
+                throw new EntityNotFoundException("TaskList not found");
+            }
+            task.setList(list); // Associa a lista à tarefa
+        } else {
+            task.setList(null); // Caso não haja lista, setamos null ou uma "Lista Geral"
         }
-        task.setList(list);
+
         return taskRepository.save(task);
     }
+
+
 
     @Transactional
     public Task getTaskById(Long id) {
