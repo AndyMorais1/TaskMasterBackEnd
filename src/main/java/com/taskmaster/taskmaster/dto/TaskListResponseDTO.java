@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,6 +15,7 @@ public class TaskListResponseDTO {
     private Long id;
     private String name;
     private Long userId;
+    private List<TaskResponseDTO> tasks;
 
     public Long getId() {
         return id;

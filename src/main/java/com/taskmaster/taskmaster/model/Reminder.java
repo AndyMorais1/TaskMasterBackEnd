@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -37,6 +38,20 @@ public class Reminder implements Serializable {
     @JsonBackReference
     @JoinColumn(name = "task_id", nullable = false)
     private Task task;
+
+    //sistema de auditoria
+
+    @Column(name = "date_created")
+    private LocalDateTime dateCreated = LocalDateTime.now();
+
+    @Column(name = "date_modified")
+    private LocalDateTime dateModified;
+
+    @Column(name = "create_by")
+    private String createdBy;
+
+    @Column(name = "modified_by")
+    private String modifiedBy;
 
     @Override
     public String toString() {

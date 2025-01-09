@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
 @Tag(name = "Tarefas", description = "Tudo relacionado a tarefas")
 @RestController
 @RequestMapping("api/v1/tasks")
@@ -24,11 +26,14 @@ public class TaskController {
         this.taskService = taskService;
     }
     @Operation(summary = "Criar uma nova tarefa em uma lista")
-    @PostMapping("/{listId}")
-    public ResponseEntity<TaskResponseDTO> createTask(@RequestBody TaskCreateDTO createDTO, @PathVariable Long listId) {
-        Task newTask = taskService.save(TaskMapper.toTask(createDTO), listId);
+
+
+    @PostMapping("/create")
+    public ResponseEntity<TaskResponseDTO> createTask(@RequestBody TaskCreateDTO createDTO) {
+        Task newTask = taskService.save(TaskMapper.toTask(createDTO), createDTO.getListId());
         return ResponseEntity.status(201).body(TaskMapper.toDTO(newTask));
     }
+
 
     @GetMapping("/{taskId}")
     public ResponseEntity<TaskResponseDTO> getTaskById( @PathVariable Long taskId) {
@@ -42,6 +47,7 @@ public class TaskController {
        return ResponseEntity.ok(TaskMapper.toListDTO(tasksList));
     }
 
+    //por alterar
     @DeleteMapping("/delete/{taskId}")
     public ResponseEntity<TaskResponseDTO> delete(@PathVariable Long taskId) {
         Task task = taskService.getTaskById(taskId);
@@ -49,11 +55,31 @@ public class TaskController {
         return ResponseEntity.status(200).body(TaskMapper.toDTO(task));
     }
 
-    @PostMapping("/updatename/{taskId}/{newName}")
-    public ResponseEntity<TaskResponseDTO> updateName(@PathVariable Long taskId, @PathVariable String newName) {
-        Task task = taskService.updateTaskName(taskId,newName);
+    @PostMapping("/updatename")
+    public ResponseEntity<TaskResponseDTO> updateName(@RequestBody Map<String, Object> requestBody) {
+        // Extraindo taskId e newName do Map
+        Long taskId = Long.valueOf(String.valueOf(requestBody.get("id")));
+        String newName = (String) requestBody.get("newName");
+
+        // Atualizando a tarefa com o novo nome
+        Task task = taskService.updateTaskName(taskId, newName);
+
+        // Retornando a resposta com o DTO da tarefa atualizada
         return ResponseEntity.status(200).body(TaskMapper.toDTO(task));
     }
 
+    @PostMapping("/update/status")
+    public ResponseEntity<TaskResponseDTO> updateStatusToCompleted(@RequestBody Map<String, Long> body) {
+        Long taskId = body.get("id"); // Obtém o ID do JSON
+        Task task = taskService.updateStatusToCompleted(taskId);
+        return ResponseEntity.status(200).body(TaskMapper.toDTO(task));
+    }
+
+    @PostMapping("/update/status/back")
+    public ResponseEntity<TaskResponseDTO> updateStatusToInProgress(@RequestBody Map<String, Long> body) {
+        Long taskId = body.get("id");
+        Task task = taskService.updateStatusToInProgress(taskId);
+        return ResponseEntity.status(200).body(TaskMapper.toDTO(task));
+    }
 
 }

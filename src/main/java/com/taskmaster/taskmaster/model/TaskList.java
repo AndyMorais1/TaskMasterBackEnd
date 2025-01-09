@@ -54,7 +54,7 @@ public class TaskList implements Serializable {
     //sistema de auditoria
 
     @Column(name = "date_created")
-    private LocalDateTime dateCreated;
+    private LocalDateTime dateCreated = LocalDateTime.now();
 
     @Column(name = "date_modified")
     private LocalDateTime dateModified;

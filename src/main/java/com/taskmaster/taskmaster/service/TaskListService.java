@@ -7,9 +7,12 @@ import com.taskmaster.taskmaster.repository.TaskListRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -29,6 +32,13 @@ public class TaskListService {
         if (user == null) {
             throw new EntityNotFoundException("User not found");
         }
+        Optional<TaskList> existingList = taskListRepository.findByNameAndUserId(list.getName(), userId);
+        if (existingList.isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    " A task list with the same name already exists for this user"
+            );
+        }
 
         list.setUser(user);
 
@@ -44,8 +54,13 @@ public class TaskListService {
         );
     }
 
+    public TaskList getListByName(String name) {
+        return taskListRepository.findByName(name);
+    }
+
     @Transactional
     public List<TaskList> getAll(){
+
         return taskListRepository.findAll();
     }
 
@@ -68,4 +83,11 @@ public class TaskListService {
       list.setName(newName);
       return taskListRepository.save(list);
     }
+
+    @Transactional
+    public List<TaskList> getTaskListByUserId (Long userId) {
+        List<TaskList> taskLists = taskListRepository.getTaskListByUserId(userId);
+        return taskLists;
+    }
+
 }
