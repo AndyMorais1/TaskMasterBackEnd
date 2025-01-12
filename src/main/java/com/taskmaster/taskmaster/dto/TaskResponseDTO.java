@@ -24,6 +24,62 @@ import java.time.LocalTime;
         private LocalTime dueTime;
         private String status;
         private int listId;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getPriority() {
+            return priority;
+        }
+
+        public void setPriority(String priority) {
+            this.priority = priority;
+        }
+
+        public LocalDate getDueDate() {
+            return dueDate;
+        }
+
+        public void setDueDate(LocalDate dueDate) {
+            this.dueDate = dueDate;
+        }
+
+        public LocalTime getDueTime() {
+            return dueTime;
+        }
+
+        public void setDueTime(LocalTime dueTime) {
+            this.dueTime = dueTime;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public int getListId() {
+            return listId;
+        }
+
+        public void setListId(int listId) {
+            this.listId = listId;
+        }
     }
 
 

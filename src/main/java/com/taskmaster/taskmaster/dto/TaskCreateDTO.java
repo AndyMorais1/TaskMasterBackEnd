@@ -19,4 +19,44 @@ public class TaskCreateDTO {
     private LocalDate dueDate;
     private LocalTime dueTime;
     private Long listId;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public LocalTime getDueTime() {
+        return dueTime;
+    }
+
+    public void setDueTime(LocalTime dueTime) {
+        this.dueTime = dueTime;
+    }
+
+    public Long getListId() {
+        return listId;
+    }
+
+    public void setListId(Long listId) {
+        this.listId = listId;
+    }
 }
