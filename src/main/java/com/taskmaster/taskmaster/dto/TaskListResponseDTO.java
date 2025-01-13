@@ -40,4 +40,12 @@ public class TaskListResponseDTO {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    public List<TaskResponseDTO> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<TaskResponseDTO> tasks) {
+        this.tasks = tasks;
+    }
 }

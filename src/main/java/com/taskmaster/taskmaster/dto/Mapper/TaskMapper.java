@@ -12,8 +12,14 @@ import java.util.stream.Collectors;
 public class TaskMapper {
 
     public static Task toTask(TaskCreateDTO taskCreateDTO) {
-        return (Task) new ModelMapper().map(taskCreateDTO, Task.class);
+        ModelMapper mapper = new ModelMapper();
+
+        // Ignorar o campo 'id' durante o mapeamento
+        mapper.typeMap(TaskCreateDTO.class, Task.class).addMappings(m -> m.skip(Task::setId));
+
+        return mapper.map(taskCreateDTO, Task.class);
     }
+
 
     public static TaskResponseDTO toDTO(Task task) {
         // Verifique se os campos Priority e Status são nulos antes de acessar .name()
