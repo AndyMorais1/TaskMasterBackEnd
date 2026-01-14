@@ -34,7 +34,7 @@ public class Task implements Serializable {
     private Status status = Status.STATUS_IN_PROGRESS;
 
     @Column(name = "priority", nullable = false)
-    private Priority priority;
+    private Priority priority = Priority.PRIORITY_MEDIUM;
 
     @Column(name = "due_time")
     private LocalTime dueTime;

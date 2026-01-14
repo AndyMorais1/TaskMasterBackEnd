@@ -30,26 +30,31 @@ class UserClientIntegrationTests {
     @Test
     void registerLoginAndAccessProtectedEndpoint() throws Exception {
         String email = "test" + UUID.randomUUID() + "@example.com";
+        String username = "testuser" + UUID.randomUUID();
 
         String registerBody = """
                 {
-                  "username": "testuser",
+                  "username": "%s",
                   "password": "password123",
                   "email": "%s"
                 }
-                """.formatted(email);
+                """.formatted(username, email);
 
-        mockMvc.perform(post("/api/v1/users")
+        MvcResult registerResult = mockMvc.perform(post("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(registerBody))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andReturn();
+        
+        String registerResponse = registerResult.getResponse().getContentAsString();
+        Long userId = objectMapper.readTree(registerResponse).get("id").asLong();
 
         String loginBody = """
                 {
-                  "username": "testuser",
+                  "username": "%s",
                   "password": "password123"
                 }
-                """;
+                """.formatted(username);
 
         MvcResult loginResult = mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -62,7 +67,7 @@ class UserClientIntegrationTests {
         JsonNode node = objectMapper.readTree(responseContent);
         String token = node.get("token").asText();
 
-        mockMvc.perform(get("/api/v1/task-lists")
+        mockMvc.perform(get("/api/v1/task-lists?userId=" + userId)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
     }

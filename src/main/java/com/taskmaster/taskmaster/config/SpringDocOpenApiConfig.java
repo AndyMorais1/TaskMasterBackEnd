@@ -20,9 +20,6 @@ public class SpringDocOpenApiConfig {
                                 .contact(
                                         new Contact().name("Jose Morais").email("moraisandy76@gmail.com")
                                 )
-                                .contact(
-                                        new Contact().name("Edson Manuel").email("edsonfernandesfernandes01@gmail.com")
-                                )
                 );
     }
 

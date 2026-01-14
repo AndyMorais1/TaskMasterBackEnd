@@ -34,6 +34,9 @@ public class TaskList implements Serializable {
     @OneToMany(mappedBy = "list", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks = new ArrayList<Task>();
 
+    @OneToMany(mappedBy = "taskList", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TaskListShare> shares = new ArrayList<>();
+
     @Override
     public String toString() {
         return "List{" +
@@ -100,6 +103,14 @@ public class TaskList implements Serializable {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public List<TaskListShare> getShares() {
+        return shares;
+    }
+
+    public void setShares(List<TaskListShare> shares) {
+        this.shares = shares;
     }
 
     public LocalDateTime getDateCreated() {

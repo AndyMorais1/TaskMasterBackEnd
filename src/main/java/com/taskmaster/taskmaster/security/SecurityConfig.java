@@ -42,6 +42,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/task-master.html").permitAll()
                                 .requestMatchers("/task-master/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/swagger-ui.html").permitAll()
                                 .requestMatchers("/api/v1/users/login").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
                                 .requestMatchers("/api/v1/admins/**").hasRole("ADMIN")
