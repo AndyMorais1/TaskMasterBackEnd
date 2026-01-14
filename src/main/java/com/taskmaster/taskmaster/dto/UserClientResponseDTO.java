@@ -8,16 +8,15 @@ import lombok.Setter;
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 //o que sera mostrado sobre o usuario quando for feita alguma requisicao
 public class UserClientResponseDTO {
-    private int id;
+    private Long id;
     private String username;
     private String email;
-    private String password;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -35,13 +34,5 @@ public class UserClientResponseDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

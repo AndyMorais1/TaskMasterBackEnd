@@ -50,7 +50,7 @@ public class TaskListService {
     @Transactional
     public TaskList getListById(Long id) {
         return taskListRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("List not found")
+                () -> new EntityNotFoundException("List not found")
         );
     }
 

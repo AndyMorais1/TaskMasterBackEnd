@@ -20,7 +20,7 @@ import java.util.List;
 
 @Tag(name = "Task List", description = "Tudo relacionado a listas de tarefas")
 @RestController
-@RequestMapping("api/v1/tasklists")
+@RequestMapping("api/v1/task-lists")
 public class TaskListController {
 
     @Autowired
@@ -32,10 +32,10 @@ public class TaskListController {
     }
 
     @Operation(summary = "Criar uma nova lista de tarefas para um usuario")
-    @PostMapping("/create/{userid}")
+    @PostMapping
     public ResponseEntity<TaskListResponseDTO> create(
             @RequestBody @Valid TaskListCreateDTO createDTO,
-            @PathVariable Long userid) {
+            @RequestParam Long userid) {
 
         // Converte o DTO para a entidade TaskList
         TaskList taskList = TaskListMapper.toTaskList(createDTO);
@@ -51,32 +51,32 @@ public class TaskListController {
     }
 
 
-    @GetMapping("/getList/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<TaskListResponseDTO> searchById(@PathVariable Long id) {
         TaskList list1 = taskListService.getListById(id);
         return ResponseEntity.status(200).body(TaskListMapper.toDTO(list1));
     }
 
-    @GetMapping("/{listName}")
+    @GetMapping("/by-name/{listName}")
     public ResponseEntity<TaskListResponseDTO> searchByListName(@PathVariable String listName) {
         TaskList list1 = taskListService.getListByName(listName);
         return ResponseEntity.status(200).body(TaskListMapper.toDTO(list1));
     }
 
-    @GetMapping("/lists")
+    @GetMapping
    public ResponseEntity<List<TaskListResponseDTO>> listLists() {
      List<TaskList> TaskListsList = taskListService.getAll();
      return ResponseEntity.ok(TaskListMapper.toListDTO(TaskListsList));
     }
 
-   @DeleteMapping("/delete/{listId}")
+   @DeleteMapping("/{listId}")
     public ResponseEntity<TaskListResponseDTO> delete(@PathVariable Long listId) {
         TaskList list1 = taskListService.getListById(listId);
        taskListService.deleteList(listId);
         return ResponseEntity.status(200).body(TaskListMapper.toDTO(list1));
    }
 
-   @GetMapping("/gettasks/{listId}")
+   @GetMapping("/{listId}/tasks")
     public ResponseEntity<List<TaskResponseDTO>> getTasks(@PathVariable Long listId)
    {
        List<Task> tasks = taskListService.getTasks( listId);
@@ -85,15 +85,14 @@ public class TaskListController {
    }
 
 
-   // por alterar com request body
-   @PostMapping("/updatename/{tasklistId}/{newname}")
-    public ResponseEntity<TaskListResponseDTO> updateTaskListName(@PathVariable Long tasklistId, @PathVariable String newname) {
-        TaskList list1 = taskListService.updateTaskListName(tasklistId,newname);
+   @PutMapping("/{tasklistId}/name")
+    public ResponseEntity<TaskListResponseDTO> updateTaskListName(@PathVariable Long tasklistId, @RequestBody TaskListCreateDTO body) {
+        TaskList list1 = taskListService.updateTaskListName(tasklistId, body.getName());
         return ResponseEntity.status(200).body(TaskListMapper.toDTO(list1));
 
    }
 
-   @GetMapping("/listByUser/{userId}")
+   @GetMapping("/by-user/{userId}")
     public ResponseEntity <List<TaskListResponseDTO>> searchByUserId(@PathVariable Long userId) {
         List<TaskList> listOfTaskLists = taskListService.getTaskListByUserId(userId);
         return ResponseEntity.ok(TaskListMapper.toListDTO(listOfTaskLists));

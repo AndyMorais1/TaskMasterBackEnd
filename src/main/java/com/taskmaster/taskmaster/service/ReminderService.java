@@ -2,6 +2,7 @@ package com.taskmaster.taskmaster.service;
 
 import com.taskmaster.taskmaster.model.Reminder;
 import com.taskmaster.taskmaster.repository.ReminderRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class ReminderService {
     @Transactional
     public Reminder getReminderById(Long id) {
         return reminderRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Reminder not found")
+                () -> new EntityNotFoundException("Reminder not found")
         );
     }
 

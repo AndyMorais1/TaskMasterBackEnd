@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @Tag(name = "Lembretes", description = "Tudo relacionado a Lembretes de tarefas")
 @RestController
+@RequestMapping("api/v1/reminders")
 public class ReminderController {
     @Autowired
     private final ReminderService reminderService;
@@ -32,12 +33,13 @@ public class ReminderController {
         return ResponseEntity.status(200).body(remind1);
     }
 
-    @GetMapping("/lists")
-    public  List<Reminder> getAll() {
-        return reminderService.getAllReminders();
+    @GetMapping
+    public ResponseEntity<List<Reminder>> getAll() {
+        List<Reminder> reminders = reminderService.getAllReminders();
+        return ResponseEntity.ok(reminders);
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Reminder> delete(@PathVariable Long id) {
         Reminder reminder = reminderService.getReminderById(id);
         reminderService.deleteReminderById(id);

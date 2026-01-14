@@ -7,6 +7,6 @@ import jakarta.persistence.*;
 public class UserAdmin  extends User {
     public UserAdmin() {
         super();
-        this.setRole(Role.ROLE_CLIENT);
+        this.setRole(Role.ROLE_ADMIN);
     }
 }

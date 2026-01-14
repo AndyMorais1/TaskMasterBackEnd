@@ -4,12 +4,13 @@ import com.taskmaster.taskmaster.dto.Mapper.UserClientMapper;
 import com.taskmaster.taskmaster.dto.UserClientCreateDTO;
 import com.taskmaster.taskmaster.dto.UserClientLoginDTO;
 import com.taskmaster.taskmaster.dto.UserClientResponseDTO;
+import com.taskmaster.taskmaster.dto.UserUpdatePasswordDTO;
+import com.taskmaster.taskmaster.dto.UserUpdateUsernameDTO;
 import com.taskmaster.taskmaster.model.UserClient;
 import com.taskmaster.taskmaster.service.UserClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,9 @@ import java.util.Map;
 //o spring entende que e uma bean controller para uso de requisicoes Rest (baseada em HTTP)
 @RestController
 
-//path de acesso ao recurso (controller), ou seja,
-//o caminho base dentro dos recursos da controller
-@RequestMapping("api/v1/userClients")//caminho
+@RequestMapping("api/v1/users")
 public class UserClientController {
 
-    @Autowired
     private final UserClientService userClientService;//injecao de dependencia para o service
 
     @Autowired
@@ -39,10 +37,9 @@ public class UserClientController {
     }
 
     @Operation(summary = "Criar um novo usuario")
-    //cria usuario no banco
     @PostMapping
     public ResponseEntity<UserClientResponseDTO> create(@Valid @RequestBody UserClientCreateDTO createDTO) {
-        UserClient user1 = userClientService.save(UserClientMapper.toUser(createDTO));
+        UserClient user1 = userClientService.register(UserClientMapper.toUser(createDTO));
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(UserClientMapper.toDTO(user1));
     }
 
@@ -52,20 +49,20 @@ public class UserClientController {
         return ResponseEntity.ok(UserClientMapper.toDTO(user));
     }
 
-    @GetMapping("/getbyname/{username}")
+    @GetMapping("/by-username/{username}")
     public ResponseEntity<UserClientResponseDTO> searchByUsername(@PathVariable String username) {
         UserClient user = userClientService.getByName(username);
         return ResponseEntity.ok(UserClientMapper.toDTO(user));
     }
 
-    @GetMapping("/userlist")
-    public ResponseEntity<List<UserClientResponseDTO>> searchUserList() {
+    @GetMapping
+    public ResponseEntity<List<UserClientResponseDTO>> listUsers() {
         List<UserClient> userList = userClientService.getAll();
         return ResponseEntity.ok(UserClientMapper.toListDTO(userList));
     }
 
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<UserClientResponseDTO> delete(@PathVariable Long id) {
         UserClient user1 = userClientService.getById(id);
         UserClientResponseDTO dtoUser1 = UserClientMapper.toDTO(user1);
@@ -73,35 +70,29 @@ public class UserClientController {
         return ResponseEntity.ok().body(dtoUser1);
     }
 
-    // por alterar com request body
-    @PostMapping("/updatename/{userid}/{newname}")
-    public ResponseEntity<UserClientResponseDTO> updateName(@PathVariable Long userid, @PathVariable String newname) {
-        UserClient user1 = userClientService.getById(userid);
-        user1.setUsername(newname);
-        userClientService.save(user1);
-        UserClientResponseDTO dtoUser1 = UserClientMapper.toDTO(userClientService.save(user1));
-        return ResponseEntity.ok().body(dtoUser1);
+    @PutMapping("/{userid}/username")
+    public ResponseEntity<UserClientResponseDTO> updateName(@PathVariable Long userid, @Valid @RequestBody UserUpdateUsernameDTO body) {
+        UserClient updatedUser = userClientService.updateName(userid, body.getUsername());
+        if (updatedUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(UserClientMapper.toDTO(updatedUser));
     }
 
-    // por alterar com request body
-    @PostMapping("/updatepassword/{userid}/{newpassword}")
-    public ResponseEntity<UserClientResponseDTO> updatePassword(@PathVariable Long userid, @PathVariable String newpassword) {
-        UserClient user1 = userClientService.getById(userid);
-        user1.setPassword(newpassword);
-        userClientService.save(user1);
-        UserClientResponseDTO dtoUser1 = UserClientMapper.toDTO(userClientService.save(user1));
-        return ResponseEntity.ok().body(dtoUser1);
+    @PutMapping("/{userid}/password")
+    public ResponseEntity<UserClientResponseDTO> updatePassword(@PathVariable Long userid, @Valid @RequestBody UserUpdatePasswordDTO body) {
+        UserClient updatedUser = userClientService.updatePassword(userid, body.getPassword());
+        if (updatedUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(UserClientMapper.toDTO(updatedUser));
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@Valid @RequestBody UserClientLoginDTO dto) {
-        boolean isValid = userClientService.verifyLogin(dto.getUsername(), dto.getPassword());
+    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody UserClientLoginDTO dto) {
+        String token = userClientService.login(dto.getUsername(), dto.getPassword());
         Map<String, String> response = new HashMap<>();
-        if (isValid) {
-            response.put("message", "Login successful");
-        } else {
-            response.put("message", "Invalid username or password");
-        }
-        return response;
+        response.put("token", token);
+        return ResponseEntity.ok(response);
     }
 }

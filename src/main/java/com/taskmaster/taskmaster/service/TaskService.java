@@ -58,15 +58,6 @@ public class TaskService {
 
 
     @Transactional
-    public Task updateTask(Long id, Task task) {
-        Optional<Task> taskOptional = taskRepository.findById(id);
-        if (taskOptional.isPresent()) {
-            Task taskToUpdate = taskOptional.get();
-        }
-        return taskRepository.save(task);
-    }
-
-    @Transactional
     public Task updateTaskName(Long taskId, String name) {
         Task task = taskRepository.findById(taskId).orElseThrow(
                 () -> new EntityNotFoundException("Task not found")
