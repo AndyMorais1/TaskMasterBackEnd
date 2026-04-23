@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taskmaster-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: taskmaster-app
+  template:
+    metadata:
+      labels:
+        app: taskmaster-app
+    spec:
+      containers:
+        - name: taskmaster-app
+          image: taskmaster-app:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: taskmaster-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taskmaster-app
+spec:
+  selector:
+    app: taskmaster-app
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30080
